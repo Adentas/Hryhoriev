@@ -5,9 +5,18 @@ import zipfile
 import tarfile
 from pathlib import Path
 
+# Отримуємо шлях до поточного файлу
+current_file_path = os.path.abspath(__file__)
+
+# Отримуємо шлях до каталогу, що містить поточний файл
+current_directory_path = os.path.dirname(current_file_path)
+
+folder_path = current_directory_path
+archives = folder_path + "\\archives"
+
 # folder_path = Path(input("Enter your trash box path"))
-folder_path = Path('c:/Users/Илья/Desktop/Курсы/PythonCore')
-archives = Path('c:/Users/Илья/Desktop/Курсы/PythonCore/archives')
+# folder_path = Path('c:/Users/Илья/Desktop/Курсы/PythonCore')
+# archives = Path('c:/Users/Илья/Desktop/Курсы/PythonCore/archives')
     
 def normalize(name):
     
