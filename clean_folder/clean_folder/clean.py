@@ -119,8 +119,9 @@ def extract_archives(folder_path):
                     tar_ref.extractall(archive_folder)
             elif file_name.endswith(".ogg"):
                 shutil.unpack_archive(file_path, archive_folder)
-
-rename_files(folder_path)
-sort_files(folder_path, file_extensions)
-delete_empty_folders(folder_path)
-extract_archives(archives)
+def main():
+    rename_files(folder_path)
+    sort_files(folder_path, file_extensions)
+    delete_empty_folders(folder_path)
+    extract_archives(archives)
+    
