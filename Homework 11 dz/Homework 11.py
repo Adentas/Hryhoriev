@@ -65,9 +65,12 @@ class Record:
     def days_to_birthday(self):
         if self.birthday.value:
             today = date.today()
-            next_birthday = date(today.year, self.birthday.value.month, self.birthday.value.day)
+            birthday_date_parts = self.birthday.value.split(".")
+            birthday_day = int(birthday_date_parts[0])
+            birthday_month = int(birthday_date_parts[1])
+            next_birthday = date(today.year, birthday_month, birthday_day)
             if next_birthday < today:
-                next_birthday = date(today.year + 1, self.birthday.value.month, self.birthday.value.day)
+                next_birthday = date(today.year + 1, birthday_month, birthday_day)
             days_left = (next_birthday - today).days
             return days_left
         else:
@@ -245,26 +248,37 @@ def process_command(command):
         else:
             return "Контакт не знайдено"
 
-    elif command.startswith("find"):
-        params = command[5:].strip().split(",")
-        search_params = {}
-        for param in params:
-            key, value = param.split(":")
-            search_params[key.strip()] = value.strip()
-        results = contacts.search_records(search_params)
-        if results:
-            return "\n".join(results)
+    elif command.startswith("when birthday"):
+        name = command[14:].strip()
+        if name:
+            if name in contacts:
+                record = contacts[name]
+                days = record.days_to_birthday()
+                if days is not None:
+                    if days == 0:
+                        return "Сьогодні день народження!"
+                    else:
+                        return f"До наступного дня народження залишилося {days} днів."
+                else:
+                    return "У цього контакту не вказана дата народження."
+            else:
+                return "Контакт не знайдено"
         else:
-            return "Контакти не знайдено"
-
+            return "Будь ласка, введіть ім'я контакту після команди 'when birthday'."
+        
     elif command == "help":
         return "Доступні команди:\n- hello\n- show all\n- add <ім'я> <номер телефону> [дата народження]\n- change <ім'я> <новий номер телефону>\n- phone <ім'я>\n- remove <ім'я>\n- find <параметри пошуку>\n- help\n- exit"
 
-    elif command == "exit":
+    elif command.lower() in ["good bye", "close", "exit"]:
         return "Good bye!"
 
     else:
         return "Некоректна команда. Введіть 'help' для отримання довідки."
+
+
+if __name__ == "__main__":
+    main()
+
 
 
 if __name__ == "__main__":
